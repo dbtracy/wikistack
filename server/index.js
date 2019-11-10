@@ -1,6 +1,12 @@
 const express = require('express')
 const morgan = require('morgan')
 const layout = require('../views/layout')
+const { db } = require('../models')
+
+db.authenticate()
+  .then(() => {
+    console.log('connected to the database')
+  })
 
 const app = express()
 
