@@ -1,18 +1,19 @@
 const express = require('express')
 const morgan = require('morgan')
+const layout = require('../views/layout')
 
 const app = express()
 
 app.use(morgan('combined'))
 
-app.use(express.static)
+app.use(express.static('public'))
 
-app.use(express.urlencoded)
+app.use(express.urlencoded({ extended: false }))
 
-app.listen(1337 => {
-  console.log('listening on port 1337')
+app.listen(3000, () => {
+  console.log('listening on port 3000')
 })
 
 app.get('/', (req, res) => {
-  res.send('Hello World')
+  res.send(layout())
 })
