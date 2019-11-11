@@ -2,6 +2,8 @@ const express = require('express')
 const morgan = require('morgan')
 const layout = require('../views/layout')
 const { db, Page, User } = require('../models')
+const wikiRouter = require('./routes/wiki')
+const userRouter = require('./routes/user')
 
 db.authenticate()
   .then(() => {
@@ -16,6 +18,13 @@ app.use(express.static('public'))
 
 app.use(express.urlencoded({ extended: false }))
 
+app.use('/wiki', wikiRouter.router)
+// app.use('/user', userRouter)
+
+app.get('/', (req, res) => {
+  res.send(layout())
+})
+
 const init = async () => {
   await db.sync({ force: true })
 
@@ -25,7 +34,3 @@ const init = async () => {
 }
 
 init()
-
-app.get('/', (req, res) => {
-  res.send(layout())
-})
