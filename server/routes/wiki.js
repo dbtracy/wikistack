@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { User, Page } = require('../../models')
 
-const { addPage, wikiPage, main } = require('../../views')
+const { addPage, wikiPage, main, notFound } = require('../../views')
 
 router.get('/', async (req, res, next) => {
   try {
@@ -46,8 +46,13 @@ router.post('/', async (req, res, next) => {
 router.get('/:slug', async (req, res, next) => {
   try {
     const page = await Page.findOne({ where: { slug: req.params.slug } })
-    const author = await page.getAuthor()
-    res.send(wikiPage(page, author))
+    if (page) {
+      const author = await page.getAuthor()
+      res.send(wikiPage(page, author))
+    } else {
+      res.send(notFound())
+    }
+
   } catch (error) {
     next(error)
   }
