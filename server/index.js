@@ -21,7 +21,7 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/wiki', wikiRouter.router)
-// app.use('/user', userRouter)
+app.use('/users', userRouter.router)
 
 app.get('/', (req, res, next) => {
   res.redirect('/wiki')
