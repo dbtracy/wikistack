@@ -19,17 +19,27 @@ router.get('/add', (req, res) => {
 })
 
 
-router.post('/', async (req, res) => {
-  const page = new Page({
-    title: req.body.title,
-    content: req.body.content
-  })
+router.post('/', async (req, res, next) => {
 
   try {
+    const [author, wasCreated] = await User.findOrCreate({
+      where: {
+        name: req.body.name,
+        email: req.body.email
+      }
+    })
+
+    const page = await Page.create({
+      title: req.body.title,
+      content: req.body.content
+    })
+
+    page.setAuthor(author)
+
     await page.save()
     res.redirect(`/wiki/${page.dataValues.slug}`)
   } catch (error) {
-    console.log(error)
+    next(error)
   }
 })
 
