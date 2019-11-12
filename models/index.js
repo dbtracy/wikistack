@@ -17,7 +17,8 @@ const Page = db.define('page', {
   },
   slug: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   },
   content: {
     type: Sequelize.TEXT,
@@ -28,13 +29,14 @@ const Page = db.define('page', {
   }
 })
 
-Page.beforeValidate((instance) => {
-
-  function generateSlug(title) {
-    return title.replace(/\s+/g, '_').replace(/\W/g, '')
+Page.beforeValidate(page => {
+  console.log('PAGE:', page)
+  if (!page.slug) {
+    page.slug = page.title
+      .replace(/\s/g, '_')
+      .replace(/\W/g, '')
+      .toLowerCase()
   }
-
-  instance.slug = generateSlug(instance.title)
 })
 
 const User = db.define('user', {
@@ -52,6 +54,7 @@ const User = db.define('user', {
 })
 
 Page.belongsTo(User, { as: 'author' })
+User.hasMany(Page, { foreignKey: 'authorId' })
 
 module.exports = {
   db,
