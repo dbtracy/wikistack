@@ -87,6 +87,15 @@ router.post('/:slug', async (req, res, next) => {
   }
 })
 
+router.get('/:slug/delete', async (req, res, next) => {
+  try {
+    const oldPage = await Page.destroy({ where: { slug: req.params.slug } })
+    res.redirect(`/wiki`)
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = {
   router
 }
