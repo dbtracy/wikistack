@@ -33,7 +33,7 @@ module.exports = (content) => html`<!DOCTYPE html>
       </div>
       <hr/>
       <div id="footer" class="container text-muted">
-        WIKISTACK by Fullstack Academy
+        WIKISTACK
       </div>
     </body>
   </html>`;
