@@ -13,7 +13,6 @@ db.authenticate()
     console.log('connected to the database')
   })
 
-
 app.use(morgan('dev'))
 
 app.use(express.static('public'))
